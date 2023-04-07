@@ -142,42 +142,42 @@ packageChaincode
 
 ## Install chaincode on peer0.did and peer0.badge
 infoln "Installing chaincode on peer0.did..."
-installChaincode did
+installChaincode "did"
 infoln "Install chaincode on peer0.badge..."
-installChaincode badge
+installChaincode "badge"
 
 ## query whether the chaincode is installed
-queryInstalled 1
+queryInstalled "did"
 
 ## approve the definition for did
-approveForMyOrg 1
+approveForMyOrg "did"
 
 ## check whether the chaincode definition is ready to be committed
 ## expect did to have approved and badge not to
-checkCommitReadiness 1 "\"didMSP\": true" "\"badgeMSP\": false"
-checkCommitReadiness 2 "\"didMSP\": true" "\"badgeMSP\": false"
+checkCommitReadiness "did" "\"didMSP\": true" "\"badgeMSP\": false"
+checkCommitReadiness "badge" "\"didMSP\": true" "\"badgeMSP\": false"
 
 ## now approve also for badge
-approveForMyOrg 2
+approveForMyOrg "badge"
 
 ## check whether the chaincode definition is ready to be committed
 ## expect them both to have approved
-checkCommitReadiness 1 "\"didMSP\": true" "\"badgeMSP\": true"
-checkCommitReadiness 2 "\"didMSP\": true" "\"badgeMSP\": true"
+checkCommitReadiness "did" "\"didMSP\": true" "\"badgeMSP\": true"
+checkCommitReadiness "badge" "\"didMSP\": true" "\"badgeMSP\": true"
 
 ## now that we know for sure both orgs have approved, commit the definition
-commitChaincodeDefinition 1 2
+commitChaincodeDefinition "did" "badge"
 
 ## query on both orgs to see that the definition committed successfully
-queryCommitted 1
-queryCommitted 2
+queryCommitted "did"
+queryCommitted "badge"
 
 ## Invoke the chaincode - this does require that the chaincode have the 'initLedger'
 ## method defined
 if [ "$CC_INIT_FCN" = "NA" ]; then
   infoln "Chaincode initialization is not required"
 else
-  chaincodeInvokeInit 1 2
+  chaincodeInvokeInit "did" "badge"
 fi
 
 exit 0
