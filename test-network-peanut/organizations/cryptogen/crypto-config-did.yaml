@@ -49,6 +49,7 @@ PeerOrgs:
       Count: 1
       SANS:
         - localhost
+        - peer0.did.byondz.io
       # Start: 5
       # Hostname: {{.Prefix}}{{.Index}} # default
     # ---------------------------------------------------------------------------
