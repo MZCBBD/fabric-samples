@@ -1,0 +1,35 @@
+---
+name: test-network-${ORG}
+version: 1.0.0
+client:
+  organization: ${ORG}
+  connection:
+    timeout:
+      peer:
+        endorser: "300"
+organizations:
+  Org${ORG}:
+    mspid: ${ORG}MSP
+    peers:
+      - peer0.${ORG}.byondz.io
+    certificateAuthorities:
+      - ca.${ORG}.byondz.io
+peers:
+  peer0.${ORG}.byondz.io:
+    url: grpcs://localhost:${P0PORT}
+    tlsCACerts:
+      pem: |
+        ${PEERPEM}
+    grpcOptions:
+      ssl-target-name-override: peer0.${ORG}.byondz.io
+      hostnameOverride: peer0.${ORG}.byondz.io
+certificateAuthorities:
+  ca.${ORG}.byondz.io:
+    url: https://localhost:${CAPORT}
+    caName: ca-${ORG}
+    tlsCACerts:
+      pem:
+        - |
+          ${CAPEM}
+    httpOptions:
+      verify: false
