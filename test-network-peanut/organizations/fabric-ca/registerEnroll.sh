@@ -56,14 +56,14 @@ function createdid() {
 
   infoln "Generating the peer0 msp"
   set -x
-  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:7054 --caname ca-did -M "${PWD}/organizations/peerOrganizations/did.byondz.io/peers/peer0.did.byondz.io/msp" --csr.hosts peer0.did.byondz.io --tls.certfiles "${PWD}/organizations/fabric-ca/did/ca-cert.pem"
+  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:7054 --caname ca-did -M "${PWD}/organizations/peerOrganizations/did.byondz.io/peers/peer0.did.byondz.io/msp" --csr.hosts peer0.did.byondz.io --csr.names C=KR,ST=Seoul,OU=byondz.io --tls.certfiles "${PWD}/organizations/fabric-ca/did/ca-cert.pem"
   { set +x; } 2>/dev/null
 
   cp "${PWD}/organizations/peerOrganizations/did.byondz.io/msp/config.yaml" "${PWD}/organizations/peerOrganizations/did.byondz.io/peers/peer0.did.byondz.io/msp/config.yaml"
 
   infoln "Generating the peer0-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:7054 --caname ca-did -M "${PWD}/organizations/peerOrganizations/did.byondz.io/peers/peer0.did.byondz.io/tls" --enrollment.profile tls --csr.hosts peer0.did.byondz.io --csr.hosts localhost --tls.certfiles "${PWD}/organizations/fabric-ca/did/ca-cert.pem"
+  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:7054 --caname ca-did -M "${PWD}/organizations/peerOrganizations/did.byondz.io/peers/peer0.did.byondz.io/tls" --enrollment.profile tls --csr.hosts peer0.did.byondz.io --csr.hosts localhost --csr.hosts "*.did.byondz.io" --csr.names C=KR,ST=Seoul,OU=byondz.io --tls.certfiles "${PWD}/organizations/fabric-ca/did/ca-cert.pem"
   { set +x; } 2>/dev/null
 
   # Copy the tls CA cert, server cert, server keystore to well known file names in the peer's tls directory that are referenced by peer startup config
@@ -144,14 +144,14 @@ function createbadge() {
 
   infoln "Generating the peer0 msp"
   set -x
-  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:8054 --caname ca-badge -M "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer0.badge.byondz.io/msp" --csr.hosts peer0.badge.byondz.io --tls.certfiles "${PWD}/organizations/fabric-ca/badge/ca-cert.pem"
+  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:8054 --caname ca-badge -M "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer0.badge.byondz.io/msp" --csr.hosts peer0.badge.byondz.io --csr.names C=KR,ST=Seoul,OU=byondz.io --tls.certfiles "${PWD}/organizations/fabric-ca/badge/ca-cert.pem"
   { set +x; } 2>/dev/null
 
   cp "${PWD}/organizations/peerOrganizations/badge.byondz.io/msp/config.yaml" "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer0.badge.byondz.io/msp/config.yaml"
 
   infoln "Generating the peer0-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:8054 --caname ca-badge -M "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer0.badge.byondz.io/tls" --enrollment.profile tls --csr.hosts peer0.badge.byondz.io --csr.hosts localhost --tls.certfiles "${PWD}/organizations/fabric-ca/badge/ca-cert.pem"
+  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:8054 --caname ca-badge -M "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer0.badge.byondz.io/tls" --enrollment.profile tls --csr.hosts peer0.badge.byondz.io --csr.hosts localhost --csr.hosts "*.badge.byondz.io" --csr.names C=KR,ST=Seoul,OU=byondz.io --tls.certfiles "${PWD}/organizations/fabric-ca/badge/ca-cert.pem"
   { set +x; } 2>/dev/null
 
   # Copy the tls CA cert, server cert, server keystore to well known file names in the peer's tls directory that are referenced by peer startup config
@@ -221,14 +221,14 @@ function createOrderer() {
 
   infoln "Generating the orderer msp"
   set -x
-  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:9054 --caname ca-orderer -M "${PWD}/organizations/ordererOrganizations/byondz.io/orderers/orderer.byondz.io/msp" --csr.hosts orderer.byondz.io --csr.hosts localhost --tls.certfiles "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem"
+  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:9054 --caname ca-orderer -M "${PWD}/organizations/ordererOrganizations/byondz.io/orderers/orderer.byondz.io/msp" --csr.hosts orderer.byondz.io --csr.hosts localhost --csr.hosts "*.orderer.byondz.io" --csr.hosts orderer --csr.names C=KR,ST=Seoul,OU=byondz.io --tls.certfiles "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem"
   { set +x; } 2>/dev/null
 
   cp "${PWD}/organizations/ordererOrganizations/byondz.io/msp/config.yaml" "${PWD}/organizations/ordererOrganizations/byondz.io/orderers/orderer.byondz.io/msp/config.yaml"
 
   infoln "Generating the orderer-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:9054 --caname ca-orderer -M "${PWD}/organizations/ordererOrganizations/byondz.io/orderers/orderer.byondz.io/tls" --enrollment.profile tls --csr.hosts orderer.byondz.io --csr.hosts localhost --tls.certfiles "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem"
+  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:9054 --caname ca-orderer -M "${PWD}/organizations/ordererOrganizations/byondz.io/orderers/orderer.byondz.io/tls" --enrollment.profile tls --csr.hosts orderer.byondz.io --csr.hosts localhost --csr.hosts "*.orderer.byondz.io" --csr.hosts orderer --csr.names C=KR,ST=Seoul,OU=byondz.io --tls.certfiles "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem"
   { set +x; } 2>/dev/null
 
   # Copy the tls CA cert, server cert, server keystore to well known file names in the orderer's tls directory that are referenced by orderer startup config

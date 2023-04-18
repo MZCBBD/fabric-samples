@@ -16,7 +16,7 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: "172.27.0.0/24"
+        - subnet: "172.18.0.0/24"
 
 services:
   orderer.byondz.io:
@@ -60,11 +60,11 @@ services:
       - 9443:9443
     networks:
       test:
-        ipv4_address: 172.27.0.16
+        ipv4_address: 172.18.0.16
     extra_hosts:
-      - "orderer.byondz.io:172.27.0.16"
-      - "peer0.did.byondz.io:172.27.0.5"
-      - "peer0.badge.byondz.io:172.27.0.6"
+      - "orderer.byondz.io:172.18.0.16"
+      - "peer0.did.byondz.io:172.18.0.5"
+      - "peer0.badge.byondz.io:172.18.0.6"
 
   peer0.did.byondz.io:
     container_name: peer0.did.byondz.io
@@ -104,11 +104,11 @@ services:
       - 9444:9444
     networks:
       test:
-        ipv4_address: 172.27.0.5
+        ipv4_address: 172.18.0.5
     extra_hosts:
-      - "orderer.byondz.io:172.27.0.16"
-      - "peer0.did.byondz.io:172.27.0.5"
-      - "peer0.badge.byondz.io:172.27.0.6"
+      - "orderer.byondz.io:172.18.0.16"
+      - "peer0.did.byondz.io:172.18.0.5"
+      - "peer0.badge.byondz.io:172.18.0.6"
 
   peer0.badge.byondz.io:
     container_name: peer0.badge.byondz.io
@@ -148,11 +148,11 @@ services:
       - 9445:9445
     networks:
       test:
-        ipv4_address: 172.27.0.6
+        ipv4_address: 172.18.0.6
     extra_hosts:
-      - "orderer.byondz.io:172.27.0.16"
-      - "peer0.did.byondz.io:172.27.0.5"
-      - "peer0.badge.byondz.io:172.27.0.6"
+      - "orderer.byondz.io:172.18.0.16"
+      - "peer0.did.byondz.io:172.18.0.5"
+      - "peer0.badge.byondz.io:172.18.0.6"
 
   cli:
     container_name: cli
@@ -176,4 +176,8 @@ services:
       - peer0.badge.byondz.io
     networks:
       test:
-        ipv4_address: 172.27.0.3
+        ipv4_address: 172.18.0.20
+    extra_hosts:
+      - "orderer.byondz.io:172.18.0.16"
+      - "peer0.did.byondz.io:172.18.0.5"
+      - "peer0.badge.byondz.io:172.18.0.6"

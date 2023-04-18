@@ -308,7 +308,7 @@ signing:
 #  if the server creates a self-signed TLS certificate.
 ###########################################################################
 csr:
-  cn: fabric-ca-server
+  cn: ca.badge.byondz.io
   keyrequest:
     algo: ecdsa
     size: 256
@@ -322,6 +322,8 @@ csr:
     # - 145242fc9026
     - localhost
     - byondz.io
+    - ca.badge.byondz.io
+    - "*.badge.byondz.io"
   ca:
     expiry: 131400h
     pathlength: 1
