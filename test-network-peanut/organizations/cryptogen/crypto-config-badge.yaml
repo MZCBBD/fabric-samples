@@ -14,6 +14,20 @@ PeerOrgs:
     Domain: badge.byondz.io
     EnableNodeOUs: true
     # ---------------------------------------------------------------------------
+    # "CA"
+    # ---------------------------------------------------------------------------
+    # Uncomment this section to enable the explicit definition of the CA for this
+    # organization.  This entry is a Spec.  See "Specs" section below for details.
+    # ---------------------------------------------------------------------------
+    # CA:
+    #    Hostname: ca # implicitly ca.org1.example.com
+    #    Country: US
+    #    Province: California
+    #    Locality: San Francisco
+    #    OrganizationalUnit: Hyperledger Fabric
+    #    StreetAddress: address for org # default nil
+    #    PostalCode: postalCode for org # default nil
+    # ---------------------------------------------------------------------------
     # "Specs"
     # ---------------------------------------------------------------------------
     # Uncomment this section to enable the explicit definition of hosts in your
@@ -51,6 +65,8 @@ PeerOrgs:
       SANS:
         - localhost
         - peer0.badge.byondz.io
+        - ca.badge.byondz.io
+        - "*.badge.byondz.io"
       # Start: 5
       # Hostname: {{.Prefix}}{{.Index}} # default
     # ---------------------------------------------------------------------------
