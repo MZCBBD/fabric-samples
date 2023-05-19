@@ -5,7 +5,7 @@ name: REST Sample 🐧
 run-name: ${{ github.actor }} is testing the REST Sample 🐧
 
 env:
-  NODE_VER: 16.x
+  NODE_VER: 18.x
 
 on:
   workflow_dispatch:
@@ -16,9 +16,13 @@ on:
     branches: [ "main", "release-2.5" ]
     paths: [ "asset-transfer-basic/rest-api-typescript/**" ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test-sample:
-    runs-on: ubuntu-20.04
+    runs-on: fabric-ubuntu-20.04
 
     steps:
       - name: Checkout
