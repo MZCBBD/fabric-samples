@@ -75,7 +75,7 @@ function createdid() {
   { set +x;} 2>/dev/null
   
   #infoln "Generating the user msp"
-  set -x
+  # set -x
   fabric-ca-client enroll -u https://user1:user1pw@ca.did.byondz.io:7054 --caname ca-did -M "${PWD}/organizations/peerOrganizations/did.byondz.io/users/User1@did.byondz.io/msp" --tls.certfiles "${PWD}/organizations/fabric-ca/did/ca-cert.pem"
   { set +x; } 2>/dev/null
 
@@ -90,7 +90,7 @@ function createdid() {
 }
 
 function createbadge() {
-  infoln "Enrolling the CA admin"
+  #infoln "Enrolling the CA admin"
   mkdir -p organizations/peerOrganizations/badge.byondz.io/
 
   export FABRIC_CA_CLIENT_HOME=${PWD}/organizations/peerOrganizations/badge.byondz.io/
@@ -128,29 +128,29 @@ function createbadge() {
   mkdir -p "${PWD}/organizations/peerOrganizations/badge.byondz.io/ca"
   cp "${PWD}/organizations/fabric-ca/badge/ca-cert.pem" "${PWD}/organizations/peerOrganizations/badge.byondz.io/ca/ca.badge.byondz.io-cert.pem"
 
-  infoln "Registering peer0"
+  # infoln "Registering peer0"
   set -x
   fabric-ca-client register --caname ca-badge --id.name peer0 --id.secret peer0pw --id.type peer --tls.certfiles "${PWD}/organizations/fabric-ca/badge/ca-cert.pem"
   { set +x; } 2>/dev/null
 
-  infoln "Registering user"
+  # infoln "Registering user"
   set -x
   fabric-ca-client register --caname ca-badge --id.name user1 --id.secret user1pw --id.type client --tls.certfiles "${PWD}/organizations/fabric-ca/badge/ca-cert.pem"
   { set +x; } 2>/dev/null
 
-  infoln "Registering the org admin"
+  # infoln "Registering the org admin"
   set -x
   fabric-ca-client register --caname ca-badge --id.name badgeadmin --id.secret badgeadminpw --id.type admin --tls.certfiles "${PWD}/organizations/fabric-ca/badge/ca-cert.pem"
   { set +x; } 2>/dev/null
 
-  infoln "Generating the peer0 msp"
+  # infoln "Generating the peer0 msp"
   set -x
   fabric-ca-client enroll -u https://peer0:peer0pw@ca.badge.byondz.io:8054 --caname ca-badge -M "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer0.badge.byondz.io/msp" --csr.hosts peer0.badge.byondz.io --tls.certfiles "${PWD}/organizations/fabric-ca/badge/ca-cert.pem"
   { set +x; } 2>/dev/null
 
   cp "${PWD}/organizations/peerOrganizations/badge.byondz.io/msp/config.yaml" "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer0.badge.byondz.io/msp/config.yaml"
 
-  infoln "Generating the peer0-tls certificates"
+  # infoln "Generating the peer0-tls certificates"
   set -x
   fabric-ca-client enroll -u https://peer0:peer0pw@ca.badge.byondz.io:8054 --caname ca-badge -M "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer0.badge.byondz.io/tls" --enrollment.profile tls --csr.hosts peer0.badge.byondz.io --csr.hosts localhost --tls.certfiles "${PWD}/organizations/fabric-ca/badge/ca-cert.pem"
   { set +x; } 2>/dev/null
@@ -160,14 +160,14 @@ function createbadge() {
   cp "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer0.badge.byondz.io/tls/signcerts/"* "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer0.badge.byondz.io/tls/server.crt"
   cp "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer0.badge.byondz.io/tls/keystore/"* "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer0.badge.byondz.io/tls/server.key"
 
-  infoln "Generating the user msp"
+  # infoln "Generating the user msp"
   set -x
   fabric-ca-client enroll -u https://user1:user1pw@ca.badge.byondz.io:8054 --caname ca-badge -M "${PWD}/organizations/peerOrganizations/badge.byondz.io/users/User1@badge.byondz.io/msp" --tls.certfiles "${PWD}/organizations/fabric-ca/badge/ca-cert.pem"
   { set +x; } 2>/dev/null
 
   cp "${PWD}/organizations/peerOrganizations/badge.byondz.io/msp/config.yaml" "${PWD}/organizations/peerOrganizations/badge.byondz.io/users/User1@badge.byondz.io/msp/config.yaml"
 
-  infoln "Generating the org admin msp"
+  # infoln "Generating the org admin msp"
   set -x
   fabric-ca-client enroll -u https://badgeadmin:badgeadminpw@ca.badge.byondz.io:8054 --caname ca-badge -M "${PWD}/organizations/peerOrganizations/badge.byondz.io/users/Admin@badge.byondz.io/msp" --tls.certfiles "${PWD}/organizations/fabric-ca/badge/ca-cert.pem"
   { set +x; } 2>/dev/null
