@@ -308,7 +308,7 @@ signing:
 #  if the server creates a self-signed TLS certificate.
 ###########################################################################
 csr:
-  cn: ca.badge.dev.byondz.io
+  cn: ca.badge.peanut.dev.byondz.io
   keyrequest:
     algo: ecdsa
     size: 256
@@ -317,13 +317,13 @@ csr:
       ST: "Seoul"
       L: "Seoul"
       O:
-      OU: dev.byondz.io
+      OU: peanut.dev.byondz.io
   hosts:
     # - 145242fc9026
     - localhost
-    - dev.byondz.io
-    - ca.badge.dev.byondz.io
-    - "*.badge.dev.byondz.io"
+    - peanut.dev.byondz.io
+    - ca.badge.peanut.dev.byondz.io
+    - "*.badge.peanut.dev.byondz.io"
   ca:
     expiry: 131400h
     pathlength: 1

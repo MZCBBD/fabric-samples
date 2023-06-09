@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DOMAIN_POSTFIX="dev.byondz.io"
+DOMAIN_POSTFIX="peanut.dev.byondz.io"
 MODE="dev"
 
 function createdid() {
@@ -323,7 +323,7 @@ if [[ $# < 1 ]]; then
 fi
 
 if [[ $MODE == "PRD" || $MODE == "prd" ]];then
-DOMAIN_POSTFIX="byondz.io"
+DOMAIN_POSTFIX="peanut.byondz.io"
 fi 
 
 prefareCAConfig

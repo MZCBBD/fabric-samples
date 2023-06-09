@@ -30,4 +30,4 @@ services:
     networks:
       - test
     extra_hosts:
-      - 'orderer.dev.byondz.io:192.168.100.78'
+      - 'orderer.peanut.dev.byondz.io:192.168.100.78'

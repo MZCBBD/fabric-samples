@@ -57,5 +57,5 @@ services:
     networks:
       - test
     extra_hosts:
-      - "orderer.dev.byondz.io:192.168.100.78"
-      - "peer0.did.dev.byondz.io:192.168.100.69"
+      - "orderer.dev.peanut.byondz.io:192.168.100.78"
+      - "peer0.did.dev.peanut.byondz.io:192.168.100.69"
