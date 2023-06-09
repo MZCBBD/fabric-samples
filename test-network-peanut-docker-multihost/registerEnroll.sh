@@ -1,6 +1,7 @@
 #!/bin/bash
 
-DOMAIN_POSTFIX="byondz.io"
+DOMAIN_POSTFIX="dev.byondz.io"
+MODE="dev"
 
 function createdid() {
   echo "Executing docker for create certificate PEM"
@@ -22,7 +23,7 @@ function createdid() {
   export FABRIC_CA_CLIENT_HOME=${PWD}/organizations/peerOrganizations/did.${DOMAIN_POSTFIX}/
 
   set -x
-  fabric-ca-client enroll -u https://admin:adminpw@ca.did.${DOMAIN_POSTFIX}:7054 --caname ca-did --tls.certfiles "${PWD}/organizations/fabric-ca/did/ca-cert.pem"
+  fabric-ca-client enroll -u https://admin:adminpw@localhost:7054 --caname ca-did --tls.certfiles "${PWD}/organizations/fabric-ca/did/ca-cert.pem"
   { set +x; } 2>/dev/null
 
   echo 'NodeOUs:
@@ -71,14 +72,14 @@ function createdid() {
 
   echo "Generating the peer0 msp"
   set -x
-  fabric-ca-client enroll -u https://peer0:peer0pw@ca.did.${DOMAIN_POSTFIX}:7054 --caname ca-did -M "${PWD}/organizations/peerOrganizations/did.${DOMAIN_POSTFIX}/peers/peer0.did.${DOMAIN_POSTFIX}/msp" --csr.hosts peer0.did.${DOMAIN_POSTFIX} --csr.hosts peer1.did.${DOMAIN_POSTFIX} --tls.certfiles "${PWD}/organizations/fabric-ca/did/ca-cert.pem"
+  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:7054 --caname ca-did -M "${PWD}/organizations/peerOrganizations/did.${DOMAIN_POSTFIX}/peers/peer0.did.${DOMAIN_POSTFIX}/msp" --csr.hosts peer0.did.${DOMAIN_POSTFIX} --csr.hosts peer1.did.${DOMAIN_POSTFIX} --tls.certfiles "${PWD}/organizations/fabric-ca/did/ca-cert.pem"
   { set +x; } 2>/dev/null
 
   cp "${PWD}/organizations/peerOrganizations/did.${DOMAIN_POSTFIX}/msp/config.yaml" "${PWD}/organizations/peerOrganizations/did.${DOMAIN_POSTFIX}/peers/peer0.did.${DOMAIN_POSTFIX}/msp/config.yaml"
 
   echo "Generating the peer0-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://peer0:peer0pw@ca.did.${DOMAIN_POSTFIX}:7054 --caname ca-did -M "${PWD}/organizations/peerOrganizations/did.${DOMAIN_POSTFIX}/peers/peer0.did.${DOMAIN_POSTFIX}/tls" --enrollment.profile tls --csr.hosts peer0.did.${DOMAIN_POSTFIX} --csr.hosts peer1.did.${DOMAIN_POSTFIX} --tls.certfiles "${PWD}/organizations/fabric-ca/did/ca-cert.pem"
+  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:7054 --caname ca-did -M "${PWD}/organizations/peerOrganizations/did.${DOMAIN_POSTFIX}/peers/peer0.did.${DOMAIN_POSTFIX}/tls" --enrollment.profile tls --csr.hosts peer0.did.${DOMAIN_POSTFIX} --csr.hosts peer1.did.${DOMAIN_POSTFIX} --tls.certfiles "${PWD}/organizations/fabric-ca/did/ca-cert.pem"
   { set +x; } 2>/dev/null
 
   # Copy the tls CA cert, server cert, server keystore to well known file names in the peer's tls directory that are referenced by peer startup config
@@ -90,14 +91,14 @@ function createdid() {
   
   echo "Generating the user msp"
   set -x
-  fabric-ca-client enroll -u https://user1:user1pw@ca.did.${DOMAIN_POSTFIX}:7054 --caname ca-did -M "${PWD}/organizations/peerOrganizations/did.${DOMAIN_POSTFIX}/users/User1@did.${DOMAIN_POSTFIX}/msp" --tls.certfiles "${PWD}/organizations/fabric-ca/did/ca-cert.pem"
+  fabric-ca-client enroll -u https://user1:user1pw@localhost:7054 --caname ca-did -M "${PWD}/organizations/peerOrganizations/did.${DOMAIN_POSTFIX}/users/User1@did.${DOMAIN_POSTFIX}/msp" --tls.certfiles "${PWD}/organizations/fabric-ca/did/ca-cert.pem"
   { set +x; } 2>/dev/null
 
   cp "${PWD}/organizations/peerOrganizations/did.${DOMAIN_POSTFIX}/msp/config.yaml" "${PWD}/organizations/peerOrganizations/did.${DOMAIN_POSTFIX}/users/User1@did.${DOMAIN_POSTFIX}/msp/config.yaml"
 
   echo "Generating the org admin msp"
   set -x
-  fabric-ca-client enroll -u https://didadmin:didadminpw@ca.did.${DOMAIN_POSTFIX}:7054 --caname ca-did -M "${PWD}/organizations/peerOrganizations/did.${DOMAIN_POSTFIX}/users/Admin@did.${DOMAIN_POSTFIX}/msp" --tls.certfiles "${PWD}/organizations/fabric-ca/did/ca-cert.pem"
+  fabric-ca-client enroll -u https://didadmin:didadminpw@localhost:7054 --caname ca-did -M "${PWD}/organizations/peerOrganizations/did.${DOMAIN_POSTFIX}/users/Admin@did.${DOMAIN_POSTFIX}/msp" --tls.certfiles "${PWD}/organizations/fabric-ca/did/ca-cert.pem"
   { set +x; } 2>/dev/null
 
   cp "${PWD}/organizations/peerOrganizations/did.${DOMAIN_POSTFIX}/msp/config.yaml" "${PWD}/organizations/peerOrganizations/did.${DOMAIN_POSTFIX}/users/Admin@did.${DOMAIN_POSTFIX}/msp/config.yaml"
@@ -127,7 +128,7 @@ function createbadge() {
   export FABRIC_CA_CLIENT_HOME=${PWD}/organizations/peerOrganizations/badge.${DOMAIN_POSTFIX}/
 
   set -x
-  fabric-ca-client enroll -u https://admin:adminpw@ca.badge.${DOMAIN_POSTFIX}:7054 --caname ca-badge --tls.certfiles "${PWD}/organizations/fabric-ca/badge/ca-cert.pem"
+  fabric-ca-client enroll -u https://admin:adminpw@localhost:7054 --caname ca-badge --tls.certfiles "${PWD}/organizations/fabric-ca/badge/ca-cert.pem"
   { set +x; } 2>/dev/null
 
   echo 'NodeOUs:
@@ -176,14 +177,14 @@ function createbadge() {
 
   echo "Generating the peer0 msp"
   set -x
-  fabric-ca-client enroll -u https://peer0:peer0pw@ca.badge.${DOMAIN_POSTFIX}:7054 --caname ca-badge -M "${PWD}/organizations/peerOrganizations/badge.${DOMAIN_POSTFIX}/peers/peer0.badge.${DOMAIN_POSTFIX}/msp" --csr.hosts peer0.badge.${DOMAIN_POSTFIX} --tls.certfiles "${PWD}/organizations/fabric-ca/badge/ca-cert.pem"
+  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:7054 --caname ca-badge -M "${PWD}/organizations/peerOrganizations/badge.${DOMAIN_POSTFIX}/peers/peer0.badge.${DOMAIN_POSTFIX}/msp" --csr.hosts peer0.badge.${DOMAIN_POSTFIX} --tls.certfiles "${PWD}/organizations/fabric-ca/badge/ca-cert.pem"
   { set +x; } 2>/dev/null
 
   cp "${PWD}/organizations/peerOrganizations/badge.${DOMAIN_POSTFIX}/msp/config.yaml" "${PWD}/organizations/peerOrganizations/badge.${DOMAIN_POSTFIX}/peers/peer0.badge.${DOMAIN_POSTFIX}/msp/config.yaml"
 
   echo "Generating the peer0-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://peer0:peer0pw@ca.badge.${DOMAIN_POSTFIX}:7054 --caname ca-badge -M "${PWD}/organizations/peerOrganizations/badge.${DOMAIN_POSTFIX}/peers/peer0.badge.${DOMAIN_POSTFIX}/tls" --enrollment.profile tls --csr.hosts peer0.badge.${DOMAIN_POSTFIX} --csr.hosts localhost --tls.certfiles "${PWD}/organizations/fabric-ca/badge/ca-cert.pem"
+  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:7054 --caname ca-badge -M "${PWD}/organizations/peerOrganizations/badge.${DOMAIN_POSTFIX}/peers/peer0.badge.${DOMAIN_POSTFIX}/tls" --enrollment.profile tls --csr.hosts peer0.badge.${DOMAIN_POSTFIX} --csr.hosts localhost --tls.certfiles "${PWD}/organizations/fabric-ca/badge/ca-cert.pem"
   { set +x; } 2>/dev/null
 
   # Copy the tls CA cert, server cert, server keystore to well known file names in the peer's tls directory that are referenced by peer startup config
@@ -193,14 +194,14 @@ function createbadge() {
 
   echo "Generating the user msp"
   set -x
-  fabric-ca-client enroll -u https://user1:user1pw@ca.badge.${DOMAIN_POSTFIX}:7054 --caname ca-badge -M "${PWD}/organizations/peerOrganizations/badge.${DOMAIN_POSTFIX}/users/User1@badge.${DOMAIN_POSTFIX}/msp" --tls.certfiles "${PWD}/organizations/fabric-ca/badge/ca-cert.pem"
+  fabric-ca-client enroll -u https://user1:user1pw@localhost:7054 --caname ca-badge -M "${PWD}/organizations/peerOrganizations/badge.${DOMAIN_POSTFIX}/users/User1@badge.${DOMAIN_POSTFIX}/msp" --tls.certfiles "${PWD}/organizations/fabric-ca/badge/ca-cert.pem"
   { set +x; } 2>/dev/null
 
   cp "${PWD}/organizations/peerOrganizations/badge.${DOMAIN_POSTFIX}/msp/config.yaml" "${PWD}/organizations/peerOrganizations/badge.${DOMAIN_POSTFIX}/users/User1@badge.${DOMAIN_POSTFIX}/msp/config.yaml"
 
   echo "Generating the org admin msp"
   set -x
-  fabric-ca-client enroll -u https://badgeadmin:badgeadminpw@ca.badge.${DOMAIN_POSTFIX}:7054 --caname ca-badge -M "${PWD}/organizations/peerOrganizations/badge.${DOMAIN_POSTFIX}/users/Admin@badge.${DOMAIN_POSTFIX}/msp" --tls.certfiles "${PWD}/organizations/fabric-ca/badge/ca-cert.pem"
+  fabric-ca-client enroll -u https://badgeadmin:badgeadminpw@localhost:7054 --caname ca-badge -M "${PWD}/organizations/peerOrganizations/badge.${DOMAIN_POSTFIX}/users/Admin@badge.${DOMAIN_POSTFIX}/msp" --tls.certfiles "${PWD}/organizations/fabric-ca/badge/ca-cert.pem"
   { set +x; } 2>/dev/null
 
   cp "${PWD}/organizations/peerOrganizations/badge.${DOMAIN_POSTFIX}/msp/config.yaml" "${PWD}/organizations/peerOrganizations/badge.${DOMAIN_POSTFIX}/users/Admin@badge.${DOMAIN_POSTFIX}/msp/config.yaml"
@@ -230,7 +231,7 @@ function createOrderer() {
   export FABRIC_CA_CLIENT_HOME=${PWD}/organizations/ordererOrganizations/${DOMAIN_POSTFIX}
 
   set -x
-  fabric-ca-client enroll -u https://admin:adminpw@ca.orderer.${DOMAIN_POSTFIX}:7054 --caname ca-orderer --tls.certfiles "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem"
+  fabric-ca-client enroll -u https://admin:adminpw@localhost:7054 --caname ca-orderer --tls.certfiles "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem"
   { set +x; } 2>/dev/null
 
   echo 'NodeOUs:
@@ -270,14 +271,14 @@ function createOrderer() {
 
   echo "Generating the orderer msp"
   set -x
-  fabric-ca-client enroll -u https://orderer:ordererpw@ca.orderer.${DOMAIN_POSTFIX}:7054 --caname ca-orderer -M "${PWD}/organizations/ordererOrganizations/${DOMAIN_POSTFIX}/orderers/orderer.${DOMAIN_POSTFIX}/msp" --csr.hosts orderer.${DOMAIN_POSTFIX} --tls.certfiles "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem"
+  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:7054 --caname ca-orderer -M "${PWD}/organizations/ordererOrganizations/${DOMAIN_POSTFIX}/orderers/orderer.${DOMAIN_POSTFIX}/msp" --csr.hosts orderer.${DOMAIN_POSTFIX} --tls.certfiles "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem"
   { set +x; } 2>/dev/null
 
   cp "${PWD}/organizations/ordererOrganizations/${DOMAIN_POSTFIX}/msp/config.yaml" "${PWD}/organizations/ordererOrganizations/${DOMAIN_POSTFIX}/orderers/orderer.${DOMAIN_POSTFIX}/msp/config.yaml"
 
   echo "Generating the orderer-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://orderer:ordererpw@ca.orderer.${DOMAIN_POSTFIX}:7054 --caname ca-orderer -M "${PWD}/organizations/ordererOrganizations/${DOMAIN_POSTFIX}/orderers/orderer.${DOMAIN_POSTFIX}/tls" --enrollment.profile tls --csr.hosts orderer.${DOMAIN_POSTFIX} --tls.certfiles "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem"
+  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:7054 --caname ca-orderer -M "${PWD}/organizations/ordererOrganizations/${DOMAIN_POSTFIX}/orderers/orderer.${DOMAIN_POSTFIX}/tls" --enrollment.profile tls --csr.hosts orderer.${DOMAIN_POSTFIX} --tls.certfiles "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem"
   { set +x; } 2>/dev/null
 
   # Copy the tls CA cert, server cert, server keystore to well known file names in the orderer's tls directory that are referenced by orderer startup config
@@ -291,7 +292,7 @@ function createOrderer() {
 
   echo "Generating the admin msp"
   set -x
-  fabric-ca-client enroll -u https://ordererAdmin:ordererAdminpw@ca.orderer.${DOMAIN_POSTFIX}:7054 --caname ca-orderer -M "${PWD}/organizations/ordererOrganizations/${DOMAIN_POSTFIX}/users/Admin@${DOMAIN_POSTFIX}/msp" --tls.certfiles "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem"
+  fabric-ca-client enroll -u https://ordererAdmin:ordererAdminpw@localhost:7054 --caname ca-orderer -M "${PWD}/organizations/ordererOrganizations/${DOMAIN_POSTFIX}/users/Admin@${DOMAIN_POSTFIX}/msp" --tls.certfiles "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem"
   { set +x; } 2>/dev/null
 
   cp "${PWD}/organizations/ordererOrganizations/${DOMAIN_POSTFIX}/msp/config.yaml" "${PWD}/organizations/ordererOrganizations/${DOMAIN_POSTFIX}/users/Admin@${DOMAIN_POSTFIX}/msp/config.yaml"
@@ -301,11 +302,31 @@ function createOrderer() {
   docker container rm ca_orderer
 }
 
+function prefareCAConfig() {
+  SOURCE_CACONFIG="dev-fabric-ca-server-config.yaml"
+  TARGET_CACONFIG="fabric-ca-server-config.yaml"
+
+  if [[ $MODE == "PRD" || $MODE == "prd" ]]; then
+    SOURCE_CACONFIG="prd-fabric-ca-server-config.yaml"
+  fi
+
+  for i in did badge ordererOrg;
+    do
+    cp "${PWD}/organizations/fabric-ca/${i}/${SOURCE_CACONFIG}" "${PWD}/organizations/fabric-ca/${i}/${TARGET_CACONFIG}"
+  done
+}
+
 # main
 if [[ $# < 1 ]]; then
   echo "Need a argument, available arguments are createdid, createbadge, createOrderer, all, and purge"
   exit 1
 fi
+
+if [[ $MODE == "PRD" || $MODE == "prd" ]];then
+DOMAIN_POSTFIX="byondz.io"
+fi 
+
+prefareCAConfig
 
 case $1 in
   "createdid")
@@ -325,10 +346,11 @@ case $1 in
   "purge")
     rm -rf ./organizations/{peerOrganizations,ordererOrganizations}
     sudo rm -rf ./organizations/fabric-ca/{did,badge,ordererOrg}/msp
-    rm -rf ./organizations/fabric-ca/{did,badge,ordererOrg}/ca-cert.pem
-    rm -rf ./organizations/fabric-ca/{did,badge,ordererOrg}/fabric-ca-server.db
-    rm -rf ./organizations/fabric-ca/{did,badge,ordererOrg}/IssuerPublicKey
-    rm -rf ./organizations/fabric-ca/{did,badge,ordererOrg}/IssuerRevocationPublicKey
-    rm -rf ./organizations/fabric-ca/{did,badge,ordererOrg}/tls-cert.pem
+    rm -f ./organizations/fabric-ca/{did,badge,ordererOrg}/ca-cert.pem
+    rm -f ./organizations/fabric-ca/{did,badge,ordererOrg}/fabric-ca-server.db
+    rm -f ./organizations/fabric-ca/{did,badge,ordererOrg}/IssuerPublicKey
+    rm -f ./organizations/fabric-ca/{did,badge,ordererOrg}/IssuerRevocationPublicKey
+    rm -f ./organizations/fabric-ca/{did,badge,ordererOrg}/tls-cert.pem
+    rm -f ./organizations/fabric-ca/{did,badge,ordererOrg}/fabric-ca-server-config.yaml
   ;;
 esac
