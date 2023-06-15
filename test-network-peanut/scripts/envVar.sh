@@ -39,7 +39,6 @@ setGlobals() {
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG2_CA
     export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/badge.byondz.io/users/Admin@badge.byondz.io/msp
     export CORE_PEER_ADDRESS=localhost:9051
-
   elif [ $USING_ORG == 3 ]; then
     export CORE_PEER_LOCALMSPID="Org3MSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG3_CA
