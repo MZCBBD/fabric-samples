@@ -26,7 +26,7 @@ function yaml_ccp {
         organizations/ccp-template.yaml | sed -e $'s/\\\\n/\\\n          /g'
 }
 
-ORG=1
+ORG="did"
 P0PORT=7051
 CAPORT=7054
 PEERPEM=organizations/peerOrganizations/did.byondz.io/tlsca/tlsca.did.byondz.io-cert.pem
@@ -35,7 +35,7 @@ CAPEM=organizations/peerOrganizations/did.byondz.io/ca/ca.did.byondz.io-cert.pem
 echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/did.byondz.io/connection-did.json
 echo "$(yaml_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/did.byondz.io/connection-did.yaml
 
-ORG=2
+ORG="badge"
 P0PORT=9051
 CAPORT=8054
 PEERPEM=organizations/peerOrganizations/badge.byondz.io/tlsca/tlsca.badge.byondz.io-cert.pem
