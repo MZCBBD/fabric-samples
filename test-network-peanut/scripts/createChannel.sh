@@ -53,23 +53,31 @@ createChannel() {
 
 # joinChannel ORG
 joinChannel() {
-  FABRIC_CFG_PATH=$PWD/../config/
-  ORG=$1
-  setGlobals $ORG
-	local rc=1
-	local COUNTER=1
-	## Sometimes Join takes time, hence retry
-	while [ $rc -ne 0 -a $COUNTER -lt $MAX_RETRY ] ; do
-    sleep $DELAY
-    set -x
-    peer channel join -b $BLOCKFILE >&log.txt
-    res=$?
-    { set +x; } 2>/dev/null
-		let rc=$res
-		COUNTER=$(expr $COUNTER + 1)
+	FABRIC_CFG_PATH=$PWD/../config/
+	ORG=$1
+	local I=0
+	while [[ $I < 2 ]]; do
+		setGlobals $ORG $I
+
+		local rc=1
+		local COUNTER=1
+		local CHANNEL_DELAY=$DELAY
+		## Sometimes Join takes time, hence retry
+		while [ $rc -ne 0 -a $COUNTER -lt $MAX_RETRY ] ; do
+			echo "Sleep $CHANNEL_DELAY seconds until a peer${I}.${ORG} join channel"
+			sleep $CHANNEL_DELAY
+			set -x
+			peer channel join -b $BLOCKFILE >&log.txt
+			res=$?
+			{ set +x; } 2>/dev/null
+			let rc=$res
+			COUNTER=$(expr $COUNTER + 1)
+			CHANNEL_DELAY=$(expr $CHANNEL_DELAY \* 2)
+		done
+		cat log.txt
+		verifyResult $res "After $MAX_RETRY attempts, peer${I}.${ORG} has failed to join channel '$CHANNEL_NAME' "
+		let I=$I+1
 	done
-	cat log.txt
-	verifyResult $res "After $MAX_RETRY attempts, peer0.${ORG} has failed to join channel '$CHANNEL_NAME' "
 }
 
 setAnchorPeer() {

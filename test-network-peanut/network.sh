@@ -277,13 +277,16 @@ function createChannel() {
   # check if all containers are present
   CONTAINERS=($($CONTAINER_CLI ps | grep hyperledger/ | awk '{print $2}'))
   len=$(echo ${#CONTAINERS[@]})
-
-  if [[ $len -ge 4 ]] && [[ ! -d "organizations/peerOrganizations" ]]; then
+  local MIN_CONTAINER_COUNT=5
+  if [[ $CRYPTO == "Certificate Authorities" ]];then
+    MIN_CONTAINER_COUNT=8
+  fi
+  if [[ $len -ge $MIN_CONTAINER_COUNT ]] && [[ ! -d "organizations/peerOrganizations" ]]; then
     echo "Bringing network down to sync certs with containers"
     networkDown
   fi
 
-  [[ $len -lt 4 ]] || [[ ! -d "organizations/peerOrganizations" ]] && bringUpNetwork="true" || echo "Network Running Already"
+  [[ $len -lt $MIN_CONTAINER_COUNT ]] || [[ ! -d "organizations/peerOrganizations" ]] && bringUpNetwork="true" || echo "Network Running Already"
 
   if [ $bringUpNetwork == "true"  ]; then
     infoln "Bringing up network"
@@ -340,7 +343,7 @@ function networkDown() {
   # Don't remove the generated artifacts -- note, the ledgers are always removed
   if [ "$MODE" != "restart" ]; then
     # Bring down the network, deleting the volumes
-    ${CONTAINER_CLI} volume rm docker_orderer.byondz.io docker_peer0.did.byondz.io docker_peer0.badge.byondz.io
+    ${CONTAINER_CLI} volume rm docker_orderer.byondz.io docker_peer0.did.byondz.io docker_peer1.did.byondz.io docker_peer0.badge.byondz.io docker_peer1.badge.byondz.io
     #Cleanup the chaincode containers
     clearContainers
     #Cleanup images
