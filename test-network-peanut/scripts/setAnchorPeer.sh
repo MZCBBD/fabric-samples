@@ -21,10 +21,12 @@ createAnchorPeerUpdate() {
     HOST="peer0.did.byondz.io"
     PORT=7051
     HOST2="peer1.did.byondz.io"
-    PORT2=7151
+    PORT2=7051
   elif [ $ORG == "badge" ]; then
     HOST="peer0.badge.byondz.io"
     PORT=9051
+    HOST2="peer1.badge.byondz.io"
+    PORT2=9061
   elif [ $ORG -eq 3 ]; then
     HOST="peer0.org3.byondz.io"
     PORT=11051
@@ -37,7 +39,7 @@ createAnchorPeerUpdate() {
   if [ $ORG == "did" ]; then
     jq '.channel_group.groups.Application.groups.'${CORE_PEER_LOCALMSPID}'.values += {"AnchorPeers":{"mod_policy": "Admins","value":{"anchor_peers": [{"host": "'$HOST'","port": '$PORT'},{"host": "'$HOST2'","port": '$PORT2'}]},"version": "0"}}' ${CORE_PEER_LOCALMSPID}config.json > ${CORE_PEER_LOCALMSPID}modified_config.json
   else
-    jq '.channel_group.groups.Application.groups.'${CORE_PEER_LOCALMSPID}'.values += {"AnchorPeers":{"mod_policy": "Admins","value":{"anchor_peers": [{"host": "'$HOST'","port": '$PORT'}]},"version": "0"}}' ${CORE_PEER_LOCALMSPID}config.json > ${CORE_PEER_LOCALMSPID}modified_config.json
+    jq '.channel_group.groups.Application.groups.'${CORE_PEER_LOCALMSPID}'.values += {"AnchorPeers":{"mod_policy": "Admins","value":{"anchor_peers": [{"host": "'$HOST'","port": '$PORT'},{"host": "'$HOST2'","port": '$PORT2'}]},"version": "0"}}' ${CORE_PEER_LOCALMSPID}config.json > ${CORE_PEER_LOCALMSPID}modified_config.json
   fi
   { set +x; } 2>/dev/null
 

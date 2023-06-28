@@ -18,6 +18,7 @@ export PEER0_ORG3_CA=${PWD}/organizations/peerOrganizations/org3.byondz.io/tlsca
 export PEER0_did_CA=${PWD}/organizations/peerOrganizations/did.byondz.io/tlsca/tlsca.did.byondz.io-cert.pem
 export PEER1_did_CA=${PWD}/organizations/peerOrganizations/did.byondz.io/tlsca/tlsca.did.byondz.io-cert.pem
 export PEER0_badge_CA=${PWD}/organizations/peerOrganizations/badge.byondz.io/tlsca/tlsca.badge.byondz.io-cert.pem
+export PEER1_badge_CA=${PWD}/organizations/peerOrganizations/badge.byondz.io/tlsca/tlsca.badge.byondz.io-cert.pem
 export ORDERER_ADMIN_TLS_SIGN_CERT=${PWD}/organizations/ordererOrganizations/byondz.io/orderers/orderer.byondz.io/tls/server.crt
 export ORDERER_ADMIN_TLS_PRIVATE_KEY=${PWD}/organizations/ordererOrganizations/byondz.io/orderers/orderer.byondz.io/tls/server.key
 
@@ -29,17 +30,29 @@ setGlobals() {
   else
     USING_ORG="${OVERRIDE_ORG}"
   fi
+  local PEER_NO=1
+  if [ ! -z $2 ];then
+    PEER_NO=$2
+  fi
   infoln "Using organization ${USING_ORG}"
   if [ $USING_ORG == "did" ]; then
     export CORE_PEER_LOCALMSPID="didMSP"
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/did.byondz.io/users/Admin@did.byondz.io/msp  
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG1_CA
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/did.byondz.io/users/Admin@did.byondz.io/msp
-    export CORE_PEER_ADDRESS=localhost:7051
+    if [ $PEER_NO == 1 ];then       
+      export CORE_PEER_ADDRESS=localhost:7051
+    else
+      export CORE_PEER_ADDRESS=localhost:7151
+    fi
   elif [ $USING_ORG == "badge" ]; then
-    export CORE_PEER_LOCALMSPID="badgeMSP"
-    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG2_CA
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/badge.byondz.io/users/Admin@badge.byondz.io/msp
-    export CORE_PEER_ADDRESS=localhost:9051
+      export CORE_PEER_LOCALMSPID="badgeMSP"
+      export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG2_CA
+      export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/badge.byondz.io/users/Admin@badge.byondz.io/msp
+      if [ $PEER_NO == 1 ];then 
+        export CORE_PEER_ADDRESS=localhost:9051
+      else
+        export CORE_PEER_ADDRESS=localhost:9061
+      fi
   elif [ $USING_ORG == 3 ]; then
     export CORE_PEER_LOCALMSPID="Org3MSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG3_CA

@@ -44,6 +44,11 @@ function createdid() {
   fabric-ca-client register --caname ca-did --id.name peer0 --id.secret peer0pw --id.type peer --tls.certfiles "${PWD}/organizations/fabric-ca/did/ca-cert.pem"
   { set +x; } 2>/dev/null
 
+  infoln "Registering peer1"
+  set -x
+  fabric-ca-client register --caname ca-did --id.name peer1 --id.secret peer1pw --id.type peer --tls.certfiles "${PWD}/organizations/fabric-ca/did/ca-cert.pem"
+  { set +x; } 2>/dev/null
+
   infoln "Registering user"
   set -x
   fabric-ca-client register --caname ca-did --id.name user1 --id.secret user1pw --id.type client --tls.certfiles "${PWD}/organizations/fabric-ca/did/ca-cert.pem"
@@ -71,6 +76,25 @@ function createdid() {
   cp "${PWD}/organizations/peerOrganizations/did.byondz.io/peers/peer0.did.byondz.io/tls/tlscacerts/"* "${PWD}/organizations/peerOrganizations/did.byondz.io/peers/peer0.did.byondz.io/tls/ca.crt"
   cp "${PWD}/organizations/peerOrganizations/did.byondz.io/peers/peer0.did.byondz.io/tls/signcerts/"* "${PWD}/organizations/peerOrganizations/did.byondz.io/peers/peer0.did.byondz.io/tls/server.crt"
   cp "${PWD}/organizations/peerOrganizations/did.byondz.io/peers/peer0.did.byondz.io/tls/keystore/"* "${PWD}/organizations/peerOrganizations/did.byondz.io/peers/peer0.did.byondz.io/tls/server.key"
+  { set +x;} 2>/dev/null
+
+  infoln "Generating the peer1 msp"
+  set -x
+  fabric-ca-client enroll -u https://peer1:peer1pw@localhost:7054 --caname ca-did -M "${PWD}/organizations/peerOrganizations/did.byondz.io/peers/peer1.did.byondz.io/msp" --csr.hosts peer1.did.byondz.io --csr.names C=KR,ST=Seoul,OU=byondz.io --tls.certfiles "${PWD}/organizations/fabric-ca/did/ca-cert.pem"
+  { set +x; } 2>/dev/null
+
+  cp "${PWD}/organizations/peerOrganizations/did.byondz.io/msp/config.yaml" "${PWD}/organizations/peerOrganizations/did.byondz.io/peers/peer1.did.byondz.io/msp/config.yaml"
+
+  infoln "Generating the peer1-tls certificates"
+  set -x
+  fabric-ca-client enroll -u https://peer1:peer1pw@localhost:7054 --caname ca-did -M "${PWD}/organizations/peerOrganizations/did.byondz.io/peers/peer1.did.byondz.io/tls" --enrollment.profile tls --csr.hosts peer1.did.byondz.io --csr.hosts localhost --csr.hosts "*.did.byondz.io" --csr.names C=KR,ST=Seoul,OU=byondz.io --tls.certfiles "${PWD}/organizations/fabric-ca/did/ca-cert.pem"
+  { set +x; } 2>/dev/null
+
+  # Copy the tls CA cert, server cert, server keystore to well known file names in the peer's tls directory that are referenced by peer startup config
+  set -x
+  cp "${PWD}/organizations/peerOrganizations/did.byondz.io/peers/peer1.did.byondz.io/tls/tlscacerts/"* "${PWD}/organizations/peerOrganizations/did.byondz.io/peers/peer1.did.byondz.io/tls/ca.crt"
+  cp "${PWD}/organizations/peerOrganizations/did.byondz.io/peers/peer1.did.byondz.io/tls/signcerts/"* "${PWD}/organizations/peerOrganizations/did.byondz.io/peers/peer1.did.byondz.io/tls/server.crt"
+  cp "${PWD}/organizations/peerOrganizations/did.byondz.io/peers/peer1.did.byondz.io/tls/keystore/"* "${PWD}/organizations/peerOrganizations/did.byondz.io/peers/peer1.did.byondz.io/tls/server.key"
   { set +x;} 2>/dev/null
   
   infoln "Generating the user msp"
@@ -132,6 +156,11 @@ function createbadge() {
   fabric-ca-client register --caname ca-badge --id.name peer0 --id.secret peer0pw --id.type peer --tls.certfiles "${PWD}/organizations/fabric-ca/badge/ca-cert.pem"
   { set +x; } 2>/dev/null
 
+  infoln "Registering peer1"
+  set -x
+  fabric-ca-client register --caname ca-badge --id.name peer1 --id.secret peer1pw --id.type peer --tls.certfiles "${PWD}/organizations/fabric-ca/badge/ca-cert.pem"
+  { set +x; } 2>/dev/null
+
   infoln "Registering user"
   set -x
   fabric-ca-client register --caname ca-badge --id.name user1 --id.secret user1pw --id.type client --tls.certfiles "${PWD}/organizations/fabric-ca/badge/ca-cert.pem"
@@ -158,6 +187,23 @@ function createbadge() {
   cp "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer0.badge.byondz.io/tls/tlscacerts/"* "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer0.badge.byondz.io/tls/ca.crt"
   cp "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer0.badge.byondz.io/tls/signcerts/"* "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer0.badge.byondz.io/tls/server.crt"
   cp "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer0.badge.byondz.io/tls/keystore/"* "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer0.badge.byondz.io/tls/server.key"
+
+  infoln "Generating the peer1 msp"
+  set -x
+  fabric-ca-client enroll -u https://peer1:peer1pw@localhost:8054 --caname ca-badge -M "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer1.badge.byondz.io/msp" --csr.hosts peer1.badge.byondz.io --csr.names C=KR,ST=Seoul,OU=byondz.io --tls.certfiles "${PWD}/organizations/fabric-ca/badge/ca-cert.pem"
+  { set +x; } 2>/dev/null
+
+  cp "${PWD}/organizations/peerOrganizations/badge.byondz.io/msp/config.yaml" "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer1.badge.byondz.io/msp/config.yaml"
+
+  infoln "Generating the peer1-tls certificates"
+  set -x
+  fabric-ca-client enroll -u https://peer1:peer1pw@localhost:8054 --caname ca-badge -M "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer1.badge.byondz.io/tls" --enrollment.profile tls --csr.hosts peer1.badge.byondz.io --csr.hosts localhost --csr.hosts "*.badge.byondz.io" --csr.names C=KR,ST=Seoul,OU=byondz.io --tls.certfiles "${PWD}/organizations/fabric-ca/badge/ca-cert.pem"
+  { set +x; } 2>/dev/null
+
+  # Copy the tls CA cert, server cert, server keystore to well known file names in the peer's tls directory that are referenced by peer startup config
+  cp "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer1.badge.byondz.io/tls/tlscacerts/"* "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer1.badge.byondz.io/tls/ca.crt"
+  cp "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer1.badge.byondz.io/tls/signcerts/"* "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer1.badge.byondz.io/tls/server.crt"
+  cp "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer1.badge.byondz.io/tls/keystore/"* "${PWD}/organizations/peerOrganizations/badge.byondz.io/peers/peer1.badge.byondz.io/tls/server.key"
 
   infoln "Generating the user msp"
   set -x
