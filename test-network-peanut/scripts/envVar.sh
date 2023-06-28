@@ -16,6 +16,7 @@ export PEER0_ORG1_CA=${PWD}/organizations/peerOrganizations/did.byondz.io/tlsca/
 export PEER0_ORG2_CA=${PWD}/organizations/peerOrganizations/badge.byondz.io/tlsca/tlsca.badge.byondz.io-cert.pem
 export PEER0_ORG3_CA=${PWD}/organizations/peerOrganizations/org3.byondz.io/tlsca/tlsca.org3.byondz.io-cert.pem
 export PEER0_did_CA=${PWD}/organizations/peerOrganizations/did.byondz.io/tlsca/tlsca.did.byondz.io-cert.pem
+export PEER1_did_CA=${PWD}/organizations/peerOrganizations/did.byondz.io/tlsca/tlsca.did.byondz.io-cert.pem
 export PEER0_badge_CA=${PWD}/organizations/peerOrganizations/badge.byondz.io/tlsca/tlsca.badge.byondz.io-cert.pem
 export ORDERER_ADMIN_TLS_SIGN_CERT=${PWD}/organizations/ordererOrganizations/byondz.io/orderers/orderer.byondz.io/tls/server.crt
 export ORDERER_ADMIN_TLS_PRIVATE_KEY=${PWD}/organizations/ordererOrganizations/byondz.io/orderers/orderer.byondz.io/tls/server.key
@@ -39,7 +40,6 @@ setGlobals() {
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG2_CA
     export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/badge.byondz.io/users/Admin@badge.byondz.io/msp
     export CORE_PEER_ADDRESS=localhost:9051
-
   elif [ $USING_ORG == 3 ]; then
     export CORE_PEER_LOCALMSPID="Org3MSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG3_CA
@@ -83,7 +83,7 @@ parsePeerConnectionParameters() {
   PEERS=""
   while [ "$#" -gt 0 ]; do
     setGlobals $1
-    PEER="peer0.$1"
+    PEER="peer$2.$1"
     ## Set peer addresses
     if [ -z "$PEERS" ]
     then
@@ -93,7 +93,7 @@ parsePeerConnectionParameters() {
     fi
     PEER_CONN_PARMS=("${PEER_CONN_PARMS[@]}" --peerAddresses $CORE_PEER_ADDRESS)
     ## Set path to TLS certificate
-    CA=PEER0_$1_CA
+    CA=PEER$2_$1_CA
     TLSINFO=(--tlsRootCertFiles "${!CA}")
     PEER_CONN_PARMS=("${PEER_CONN_PARMS[@]}" "${TLSINFO[@]}")
     # shift by one to get to the next organization

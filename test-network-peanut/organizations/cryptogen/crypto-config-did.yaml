@@ -60,7 +60,7 @@ PeerOrgs:
     # name collisions
     # ---------------------------------------------------------------------------
     Template:
-      Count: 1
+      Count: 2
       SANS:
         - localhost
         - peer0.did.byondz.io
