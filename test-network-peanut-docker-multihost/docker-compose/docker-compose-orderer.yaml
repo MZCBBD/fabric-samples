@@ -3,6 +3,7 @@ version: "3.7"
 volumes:
   orderer.byondz.io:
 
+
 networks:
   test:
     name: fabric_test
@@ -50,5 +51,5 @@ services:
     networks:
       - test
     extra_hosts:
-      - "peer0.did.byondz.io:192.168.100.69"
-      - "peer0.badge.byondz.io:192.168.100.110"
+      - "peer0.did.peanut.dev.byondz.io:192.168.100.69"
+      - "peer0.badge.peanut.dev.byondz.io:192.168.100.110"

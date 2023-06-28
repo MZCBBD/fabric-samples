@@ -292,6 +292,21 @@ function createChannel() {
     infoln "Bringing up network"
     networkUp
   fi
+  
+  if [ $DATABASE == "couchdb" ]; then
+    local COUNTER=1
+    local RETRY=$(expr $MAX_RETRY \* 2)
+    local DELAY=$CLI_DELAY
+    # wait until couchdb up
+    local couchdbUp="false"
+    while [[ $couchdbUp == "false" && $COUNTER -lt $RETRY ]] ; do
+      echo "$DELAY sec. sleep until couchdb is up and running"
+      sleep $DELAY
+      couchdbUp=$(curl -s -o /dev/null localhost:5984||echo "false")
+      COUNTER=$(expr $COUNTER + 1)
+      DELAY=$(($DELAY * 2))
+    done
+  fi
 
   # now run the script that creates a channel. This script uses configtxgen once
   # to create the channel creation transaction and the anchor peer updates.
@@ -368,7 +383,7 @@ CRYPTO="cryptogen"
 # another container before giving up
 MAX_RETRY=5
 # default for delay between commands
-CLI_DELAY=3
+CLI_DELAY=5
 # channel name defaults to "mychannel"
 CHANNEL_NAME="mychannel"
 # chaincode name defaults to "NA"

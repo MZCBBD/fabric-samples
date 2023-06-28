@@ -17,6 +17,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 
 ORDERER_CA=${DIR}/test-network/organizations/ordererOrganizations/byondz.io/tlsca/tlsca.byondz.io-cert.pem
 PEER0_DID_CA=${DIR}/test-network/organizations/peerOrganizations/did.byondz.io/tlsca/tlsca.did.byondz.io-cert.pem
+PEER1_DID_CA=${DIR}/test-network/organizations/peerOrganizations/did.byondz.io/tlsca/tlsca.did.byondz.io-cert.pem
 PEER0_BADGE_CA=${DIR}/test-network/organizations/peerOrganizations/badge.byondz.io/tlsca/tlsca.badge.byondz.io-cert.pem
 PEER0_ORG3_CA=${DIR}/test-network/organizations/peerOrganizations/org3.byondz.io/tlsca/tlsca.org3.byondz.io-cert.pem
 
@@ -49,6 +50,7 @@ fi
 echo "CORE_PEER_TLS_ENABLED=true"
 echo "ORDERER_CA=${ORDERER_CA}"
 echo "PEER0_DID_CA=${PEER0_DID_CA}"
+echo "PEER1_DID_CA=${PEER1_DID_CA}"
 echo "PEER0_BADGE_CA=${PEER0_BADGE_CA}"
 echo "PEER0_ORG3_CA=${PEER0_ORG3_CA}"
 

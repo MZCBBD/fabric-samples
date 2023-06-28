@@ -15,10 +15,6 @@ volumes:
 networks:
   test:
     name: fabric_test
-    ipam:
-      driver: default
-      config:
-        - subnet: "172.18.0.0/24"
 
 services:
   orderer.byondz.io:
@@ -61,12 +57,7 @@ services:
       - 7053:7053
       - 9443:9443
     networks:
-      test:
-        ipv4_address: 172.18.0.16
-    extra_hosts:
-      - "orderer.byondz.io:172.18.0.16"
-      - "peer0.did.byondz.io:172.18.0.5"
-      - "peer0.badge.byondz.io:172.18.0.6"
+      - test
 
   peer0.did.byondz.io:
     container_name: peer0.did.byondz.io
@@ -183,12 +174,7 @@ services:
       - 9051:9051
       - 9445:9445
     networks:
-      test:
-        ipv4_address: 172.18.0.6
-    extra_hosts:
-      - "orderer.byondz.io:172.18.0.16"
-      - "peer0.did.byondz.io:172.18.0.5"
-      - "peer0.badge.byondz.io:172.18.0.6"
+      - test
 
   peer1.badge.byondz.io:
     container_name: peer1.badge.byondz.io
@@ -252,9 +238,4 @@ services:
       - peer0.badge.byondz.io
       - peer1.badge.byondz.io
     networks:
-      test:
-        ipv4_address: 172.18.0.20
-    extra_hosts:
-      - "orderer.byondz.io:172.18.0.16"
-      - "peer0.did.byondz.io:172.18.0.5"
-      - "peer0.badge.byondz.io:172.18.0.6"
+      - test
